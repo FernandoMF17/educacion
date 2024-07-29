@@ -1,0 +1,175 @@
+timestamp: 2024-07-28T11:48:40.423408
+CREATE TABLE "auth_user"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "first_name" CHAR(128),
+    "last_name" CHAR(128),
+    "email" CHAR(512),
+    "password" CHAR(512),
+    "registration_key" CHAR(512),
+    "reset_password_key" CHAR(512),
+    "registration_id" CHAR(512)
+);
+success!
+timestamp: 2024-07-28T11:48:40.427919
+CREATE TABLE "auth_group"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "role" CHAR(512),
+    "description" TEXT
+);
+success!
+timestamp: 2024-07-28T11:48:40.430670
+CREATE TABLE "auth_membership"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "user_id" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE ON UPDATE CASCADE  ,
+    "group_id" INTEGER REFERENCES "auth_group" ("id") ON DELETE CASCADE ON UPDATE CASCADE  
+);
+success!
+timestamp: 2024-07-28T11:48:40.433378
+CREATE TABLE "auth_permission"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "group_id" INTEGER REFERENCES "auth_group" ("id") ON DELETE CASCADE ON UPDATE CASCADE  ,
+    "name" CHAR(512),
+    "table_name" CHAR(512),
+    "record_id" INTEGER
+);
+success!
+timestamp: 2024-07-28T11:48:40.436113
+CREATE TABLE "auth_event"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "time_stamp" TIMESTAMP,
+    "client_ip" CHAR(512),
+    "user_id" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE ON UPDATE CASCADE  ,
+    "origin" CHAR(512),
+    "description" TEXT
+);
+success!
+timestamp: 2024-07-28T11:48:40.439192
+CREATE TABLE "auth_cas"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "user_id" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE ON UPDATE CASCADE  ,
+    "created_on" TIMESTAMP,
+    "service" CHAR(512),
+    "ticket" CHAR(512),
+    "renew" CHAR(1)
+);
+success!
+timestamp: 2024-07-28T11:57:32.576584
+CREATE TABLE "unidad_educativa"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "nombre" CHAR(128),
+    "nombre_director" CHAR(128),
+    "nombre_docente" CHAR(128),
+    "campo" CHAR(128),
+    "area" CHAR(128),
+    "gestion" INTEGER
+);
+success!
+timestamp: 2024-07-28T11:57:32.583807
+CREATE TABLE "nivel"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "descripcion" CHAR(128)
+);
+success!
+timestamp: 2024-07-28T11:57:32.586285
+CREATE TABLE "curso"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "nombre" CHAR(128),
+    "id_nivel" INTEGER REFERENCES "nivel" ("id") ON DELETE CASCADE ON UPDATE CASCADE  
+);
+success!
+timestamp: 2024-07-28T11:58:51.060392
+CREATE TABLE "trimestre"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "nombre" CHAR(128),
+    "fecha_inicio" DATE,
+    "fecha_fin" DATE
+);
+success!
+timestamp: 2024-07-28T11:58:51.066540
+CREATE TABLE "parametro"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "nombre" CHAR(128),
+    "porcentaje" DOUBLE
+);
+success!
+timestamp: 2024-07-28T11:58:51.069319
+CREATE TABLE "criterio"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "nombre" CHAR(128),
+    "id_parametro" INTEGER REFERENCES "parametro" ("id") ON DELETE CASCADE ON UPDATE CASCADE  
+);
+success!
+timestamp: 2024-07-28T11:58:51.071788
+CREATE TABLE "estudiante"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "nombres" CHAR(128),
+    "apellido_paterno" CHAR(128),
+    "apellido_materno" CHAR(128),
+    "fecha_nacimiento" DATE,
+    "curso_id" INTEGER REFERENCES "curso" ("id") ON DELETE CASCADE ON UPDATE CASCADE  
+);
+success!
+timestamp: 2024-07-28T11:58:51.074152
+CREATE TABLE "tutor"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "nombre" CHAR(128),
+    "apellido_paterno" CHAR(128),
+    "apellido_materno" CHAR(128),
+    "telefono" CHAR(15),
+    "direccion" CHAR(128),
+    "estudiante_id" INTEGER REFERENCES "estudiante" ("id") ON DELETE CASCADE ON UPDATE CASCADE  
+);
+success!
+timestamp: 2024-07-28T11:58:51.076478
+CREATE TABLE "asistencia"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "estudiante_id" INTEGER REFERENCES "estudiante" ("id") ON DELETE CASCADE ON UPDATE CASCADE  ,
+    "fecha" DATE,
+    "presente" CHAR(1)
+);
+success!
+timestamp: 2024-07-28T11:58:51.078862
+CREATE TABLE "calificacion"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "estudiante_id" INTEGER REFERENCES "estudiante" ("id") ON DELETE CASCADE ON UPDATE CASCADE  ,
+    "curso_id" INTEGER REFERENCES "curso" ("id") ON DELETE CASCADE ON UPDATE CASCADE  ,
+    "calificacion" DOUBLE,
+    "id_criterio" INTEGER REFERENCES "criterio" ("id") ON DELETE CASCADE ON UPDATE CASCADE  
+);
+success!
+timestamp: 2024-07-28T12:44:16.440658
+ALTER TABLE "unidad_educativa" ADD "departamento" CHAR(128);
+timestamp: 2024-07-28T12:44:16.461631
+ALTER TABLE "unidad_educativa" ADD "distrito_educativo" CHAR(128);
+success!
+timestamp: 2024-07-28T12:44:16.468669
+ALTER TABLE "curso" ADD "paralelo" CHAR(1);
+success!
+timestamp: 2024-07-28T12:44:16.473438
+CREATE TABLE "dimensiones"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "nombre" CHAR(128),
+    "porcentaje" DOUBLE
+);
+success!
+timestamp: 2024-07-28T12:44:16.478529
+ALTER TABLE "criterio" ADD "id_trimestre" INTEGER REFERENCES "trimestre" ("id") ON DELETE CASCADE ON UPDATE CASCADE  ;
+success!
+timestamp: 2024-07-28T12:44:16.482103
+ALTER TABLE "estudiante" ADD "genero" CHAR(1);
+timestamp: 2024-07-28T12:44:16.483995
+ALTER TABLE "estudiante" ADD "ci" CHAR(15);
+timestamp: 2024-07-28T12:44:16.485866
+ALTER TABLE "estudiante" ADD "edad" INTEGER;
+success!
+timestamp: 2024-07-28T12:44:16.489545
+ALTER TABLE "tutor" ADD "parentesco" CHAR(128);
+success!
+timestamp: 2024-07-28T14:16:06.347894
+CREATE TABLE "criterio"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "nombre" CHAR(128),
+    "id_parametro" INTEGER REFERENCES "dimensiones" ("id") ON DELETE CASCADE ON UPDATE CASCADE  ,
+    "id_trimestre" INTEGER REFERENCES "trimestre" ("id") ON DELETE CASCADE ON UPDATE CASCADE  
+);
+success!

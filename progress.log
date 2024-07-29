@@ -1,0 +1,21 @@
+[2024-07-28 13:03:26] START
+[2024-07-28 13:03:26] CREATE unidad_educativa.py: 0
+[2024-07-28 13:03:41] CREATE nivel.py: 0
+[2024-07-28 13:03:52] CREATE curso.py: 0
+[2024-07-28 13:04:10] CREATE trimestre.py: 0
+[2024-07-28 13:04:22] CREATE dimensiones.py: 0
+[2024-07-28 13:04:31] CREATE criterio.py: 0
+[2024-07-28 13:04:41] CREATE estudiante.py: 0
+[2024-07-28 13:04:53] CREATE tutor.py: 0
+[2024-07-28 13:05:01] CREATE asistencia.py: 0
+[2024-07-28 13:05:13] CREATE calificacion.py: 0
+[2024-07-28 13:13:45] CREATE unidad_educativa/index.html: 0
+[2024-07-28 13:14:52] CREATE nivel/index.html: 0
+[2024-07-28 13:15:10] CREATE curso/index.html: 0
+[2024-07-28 13:15:31] CREATE trimestre/index.html: 0
+[2024-07-28 13:15:51] CREATE dimensiones/index.html: 0
+[2024-07-28 13:16:13] CREATE criterio/index.html: 0
+[2024-07-28 13:16:28] CREATE estudiante/index.html: 0
+[2024-07-28 13:16:42] CREATE tutor/index.html: 0
+[2024-07-28 13:17:01] CREATE asistencia/index.html: 0
+[2024-07-28 13:17:17] CREATE calificacion/index.html: 0
