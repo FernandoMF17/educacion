@@ -173,3 +173,10 @@ CREATE TABLE "criterio"(
     "id_trimestre" INTEGER REFERENCES "trimestre" ("id") ON DELETE CASCADE ON UPDATE CASCADE  
 );
 success!
+timestamp: 2024-07-28T22:55:12.648057
+ALTER TABLE "trimestre" ADD "gestion" INTEGER;
+success!
+timestamp: 2024-07-28T22:55:12.654904
+ALTER TABLE "dimensiones" ADD "gestion" INTEGER;
+success!
+success!

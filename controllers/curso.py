@@ -9,7 +9,7 @@ def index():
         csv=False,
         advanced_search=False,
         maxtextlength=2500,
-        orderby=[db.curso.id],
+        orderby=[db.curso.nombre, db.curso.paralelo],
         deletable=False
     )
     titulo = 'Gestión de Cursos'

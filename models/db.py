@@ -168,39 +168,47 @@ db.define_table('unidad_educativa',
     Field('nombre_docente', 'string', length=128, requires=[IS_NOT_EMPTY(), IS_LENGTH(128)], label='Nombre del Docente'),
     Field('campo', 'string', length=128, requires=[IS_NOT_EMPTY(), IS_LENGTH(128)], label='Campo'),
     Field('area', 'string', length=128, requires=[IS_NOT_EMPTY(), IS_LENGTH(128)], label='Área'),
-    Field('gestion', 'integer', requires=IS_INT_IN_RANGE(2000, 3000), label='Gestión')
+    Field('gestion', 'integer', requires=IS_INT_IN_RANGE(2000, 3000), label='Gestión'),
+    format="%(nombre)s - %(gestion)s"
 )
 
 # Nivel
 db.define_table('nivel',
-    Field('descripcion', 'string', length=128, requires=[IS_NOT_EMPTY(), IS_LENGTH(128)], label='Descripción')
+    Field('descripcion', 'string', length=128, requires=[IS_NOT_EMPTY(), IS_LENGTH(128)], label='Descripción'),
+    format="%(descripcion)s"
 )
 
 # Curso
 db.define_table('curso',
     Field('nombre', 'string', length=128, requires=[IS_NOT_EMPTY(), IS_LENGTH(128)], label='Nombre'),
     Field('paralelo', 'string', length=1, requires=[IS_NOT_EMPTY(), IS_LENGTH(1)], label='Paralelo'),
-    Field('id_nivel', 'reference nivel', requires=IS_IN_DB(db, db.nivel.id, '%(descripcion)s'), label='Nivel')
+    Field('id_nivel', 'reference nivel', requires=IS_IN_DB(db, db.nivel.id, '%(descripcion)s'), label='Nivel'),
+    format="%(nombre)s - %(paralelo)s"
 )
 
 # Trimestre
 db.define_table('trimestre',
     Field('nombre', 'string', length=128, requires=[IS_NOT_EMPTY(), IS_LENGTH(128)], label='Nombre'),
     Field('fecha_inicio', 'date', requires=IS_DATE_IN_RANGE(format='%Y-%m-%d', minimum=datetime.date(2000, 1, 1), error_message='Ingrese una fecha válida (YYYY-MM-DD)'), label='Fecha de Inicio'),
-    Field('fecha_fin', 'date', requires=IS_DATE_IN_RANGE(format='%Y-%m-%d', minimum=datetime.date(2000, 1, 1), error_message='Ingrese una fecha válida (YYYY-MM-DD)'), label='Fecha de Fin')
+    Field('fecha_fin', 'date', requires=IS_DATE_IN_RANGE(format='%Y-%m-%d', minimum=datetime.date(2000, 1, 1), error_message='Ingrese una fecha válida (YYYY-MM-DD)'), label='Fecha de Fin'),
+    Field('gestion', 'integer', requires=IS_INT_IN_RANGE(2000, 3000), label='Gestión'),
+    format="%(nombre)s"
 )
 
 # Dimensiones
 db.define_table('dimensiones',
     Field('nombre', 'string', length=128, requires=[IS_NOT_EMPTY(), IS_LENGTH(128)], label='Nombre'),
-    Field('porcentaje', 'double', requires=IS_FLOAT_IN_RANGE(0, 100), label='Porcentaje')
+    Field('porcentaje', 'double', requires=IS_FLOAT_IN_RANGE(0, 100), label='Porcentaje'),
+    Field('gestion', 'integer', requires=IS_INT_IN_RANGE(2000, 3000), label='Gestión'),
+    format="%(nombre)s - %(porcentaje)s"
 )
 
 # Criterio
 db.define_table('criterio',
     Field('nombre', 'string', length=128, requires=[IS_NOT_EMPTY(), IS_LENGTH(128)], label='Nombre'),
     Field('id_parametro', 'reference dimensiones', requires=IS_IN_DB(db, db.dimensiones.id, '%(nombre)s'), label='Dimensión', zero="Seleccione Una Dimensión", error_message="Seleccione Una Dimensión"),    
-    Field('id_trimestre', 'reference trimestre', requires=IS_IN_DB(db, db.trimestre.id, '%(nombre)s'), label='Trimestre')
+    Field('id_trimestre', 'reference trimestre', requires=IS_IN_DB(db, db.trimestre.id, '%(nombre)s'), label='Trimestre'),
+    format="%(nombre)s"
 )
 
 # Estudiante
@@ -212,7 +220,8 @@ db.define_table('estudiante',
     Field('ci', 'string', length=15, requires=IS_NOT_EMPTY(), label='CI'),
     Field('fecha_nacimiento', 'date', requires=IS_DATE_IN_RANGE(format='%Y-%m-%d', minimum=datetime.date(1900, 1, 1), error_message='Ingrese una fecha válida (YYYY-MM-DD)'), label='Fecha de Nacimiento'),
     Field('edad', 'integer', requires=IS_INT_IN_RANGE(0, 150), label='Edad'),
-    Field('curso_id', 'reference curso', requires=IS_IN_DB(db, db.curso.id, '%(nombre)s %(paralelo)s'), label='Curso')
+    Field('curso_id', 'reference curso', requires=IS_IN_DB(db, db.curso.id, '%(nombre)s %(paralelo)s'), label='Curso'),
+    format = "%(nombres)s %(apellido_paterno)s %(apellido_materno)s"
 )
 
 # Tutor
@@ -223,14 +232,15 @@ db.define_table('tutor',
     Field('telefono', 'string', length=15, requires=IS_MATCH('^[67][0-9]{7}$', error_message='Ingrese un número de teléfono válido (8 dígitos que inicie con 6 o 7)'), label='Teléfono'),
     Field('direccion', 'string', length=128, requires=[IS_NOT_EMPTY(), IS_LENGTH(128)], label='Dirección'),
     Field('parentesco', 'string', length=128, requires=[IS_NOT_EMPTY(), IS_LENGTH(128)], label='Parentesco'),
-    Field('estudiante_id', 'reference estudiante', requires=IS_IN_DB(db, db.estudiante.id, '%(nombres)s %(apellido_paterno)s %(apellido_materno)s'), label='Estudiante')
+    Field('estudiante_id', 'reference estudiante', requires=IS_IN_DB(db, db.estudiante.id, '%(nombres)s %(apellido_paterno)s %(apellido_materno)s'), label='Estudiante'),
+    format="%(nombre)s %(apellido_paterno)s %(apellido_materno)s"
 )
 
 # Asistencia
 db.define_table('asistencia',
     Field('estudiante_id', 'reference estudiante', requires=IS_IN_DB(db, db.estudiante.id, '%(nombres)s %(apellido_paterno)s %(apellido_materno)s'), label='Estudiante'),
     Field('fecha', 'date', requires=IS_DATE_IN_RANGE(format='%Y-%m-%d', minimum=datetime.date(1900, 1, 1), error_message='Ingrese una fecha válida (YYYY-MM-DD)'), label='Fecha'),
-    Field('presente', 'boolean', default=False, label='Presente')
+    Field('presente', 'string', requires=IS_IN_SET(['Presente', 'Falta', 'Licencia', 'Retraso']), default='Presente', label='Estado de Asistencia')
 )
 
 # Calificacion

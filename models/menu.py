@@ -31,5 +31,12 @@ if not configuration.get('app.production'):
         (T('Calificaciones'), False, '#', [
             (T('Asistencia'), False, URL(_app, 'asistencia', 'index')),
             (T('Calificacion'), False, URL(_app, 'calificacion', 'index'))
+        ]),
+        (T('Reportes'), False, '#',[
+            (T('Planilla de Asistencia'), False, URL(_app, 'reportes', 'asistencia')),
+            (T('Reporte de Calificaciones por Estudiante'), False, URL(_app, 'reportes', 'calificacion_estudiante')),
+            (T('Reporte de Calificaciones por Curso'), False, URL(_app, 'reportes', 'calificacion_curso')),
+            (T('Boletin Trimestral'), False, URL(_app, 'reportes', 'calificacion_curso')),
+            (T('Boletin Anual'), False, URL(_app, 'reportes', 'calificacion_curso')),
         ])
     ]
